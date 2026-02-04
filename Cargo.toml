@@ -1,0 +1,13 @@
+[package]
+name = "zenlesszonezero-music-visualizer"
+version = "0.1.1"
+edition = "2021"
+
+[dependencies]
+windows = { version = "0.54", features = [
+    "Win32_Foundation",
+    "Win32_System_Com",
+    "Win32_Media_Audio",
+    "Win32_UI_Shell_PropertiesSystem"
+] }
+anyhow = "1.0"
