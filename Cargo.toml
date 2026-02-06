@@ -14,3 +14,8 @@ windows = { version = "0.62.2", features = [
     ] }
 anyhow = "1.0.100"
 rustfft = "6.4.1"
+wgpu = "27.0.1"
+winit = "0.30.12"
+pollster = "0.4.0"
+bytemuck = { version = "1.25.0", features = ["derive"] }
+
