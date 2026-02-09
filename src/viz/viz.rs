@@ -249,7 +249,7 @@ pub fn run(shared: SharedPipe) {
                                     // 根据频段位置应用不同的平滑系数
                                     // 低频段使用更强的平滑效果以减少抖动
                                     let freq_smooth = if i < BANDS / 6 {
-                                        SMOOTHING * 3.0 // 低频段三倍平滑强度
+                                        SMOOTHING // * 3.0 // 低频段三倍平滑强度
                                     } else {
                                         SMOOTHING // 其他频段正常使用平滑
                                     };

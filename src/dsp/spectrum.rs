@@ -46,44 +46,4 @@ impl SharedPipe {
             .map(|g| g.clone())
             .unwrap_or_else(|_| vec![0.0; BANDS])
     }
-
-    // 新增：非阻塞读取，返回是否有新数据
-    pub fn read_if_new(&self) -> Option<Vec<f32>> {
-        thread_local! {
-            static THREAD_LOCAL_VERSION: AtomicUsize = AtomicUsize::new(0);
-        }
-
-        // 使用线程局部存储跟踪每个线程上次读取的版本
-        THREAD_LOCAL_VERSION.with(|local_version| {
-            let current_version = self.version.load(Ordering::Acquire);
-            let last_version = local_version.load(Ordering::Relaxed);
-
-            if current_version > last_version {
-                local_version.store(current_version, Ordering::Relaxed);
-                Some(self.read())
-            } else {
-                None
-            }
-        })
-    }
-
-    // 新增：检查是否有新数据（无锁）
-    pub fn has_new_data(&self) -> bool {
-        thread_local! {
-            static THREAD_LOCAL_VERSION: AtomicUsize = AtomicUsize::new(0);
-        }
-
-        THREAD_LOCAL_VERSION.with(|local_version| {
-            let current_version = self.version.load(Ordering::Acquire);
-            let last_version = local_version.load(Ordering::Relaxed);
-            current_version > last_version
-        })
-    }
-
-    // 新增：带版本跟踪的读取
-    pub fn read_with_tracking(&self) -> (Vec<f32>, usize) {
-        let data = self.read();
-        let version = self.version.load(Ordering::Acquire);
-        (data, version)
-    }
 }
